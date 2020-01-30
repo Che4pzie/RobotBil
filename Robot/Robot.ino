@@ -1,6 +1,48 @@
 /*
  * Arduino projekt för EEDat. 
  */
+// Dessa måste finnas med i projektet.
+#include "secrets.h"
+#include "config.h"
+// Inkludera olika bibliotek
+#include "WiFiEsp.h"
+#include <SoftwareSerial.h>
+
+/**
+ * Här definerar ni funktioner.
+ * Lägg till funktioner och namnge dom logiskt.
+ */
+SoftwareSerial Serial1(6, 7);
+void initPins();
+void blinkStatusLed(int del);
+void connectToWiFi(void);
+
+/**
+* Setup
+*/
+void setup()
+{
+  Serial.begin(115200);
+  Serial1.begin(9600);
+
+  initPins();
+  connectToWiFi();
+}
+
+/**
+* loop
+*/
+void loop()
+{
+  blinkStatusLed(500);
+}
+
+/**
+*  Alla pins som skall ha output eller input
+*  Här lägger ni till de pins som ska fungera som input/output.
+*/
+void initPins()
+{
   pinMode(STATUS_LED, OUTPUT);
 }
 
