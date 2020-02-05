@@ -12,11 +12,18 @@
  * Här definerar ni funktioner.
  * Lägg till funktioner och namnge dom logiskt.
  */
-SoftwareSerial Serial1(6, 7);
+SoftwareSerial Serial1(SOFTSERIAL_RX, SOFTSERIAL_TX);
+
 void initPins();
 void blinkStatusLed(int del);
 void connectToWiFi(void);
-WiFiEspServer server (8080);
+void motorForward(int speed);
+void motorStop(void);
+void motorLeft(int speed);
+void motorRight(int speed);
+
+
+WiFiEspServer server (SERVER_PORT);
  int status = WL_IDLE_STATUS;
 
 /**
@@ -24,8 +31,8 @@ WiFiEspServer server (8080);
 */
 void setup()
 {
-  Serial.begin(115200);
-  Serial1.begin(9600);
+  Serial.begin(SERIAL_BAUDRATE);
+  Serial1.begin(SOFTSERIAL_BAUDRATE);
 
   initPins();
   connectToWiFi();
@@ -77,7 +84,7 @@ void loop()
         }
       }
     }
-
+  
     delay(10);
 
     client.stop();
@@ -93,6 +100,8 @@ void loop()
 void initPins()
 {
   pinMode(STATUS_LED, OUTPUT);
+  pinMode(MOTOR_LEFT, OUTPUT);
+  pinMode(MOTOR_RIGHT, OUTPUT);
 }
 
 /**
@@ -146,4 +155,25 @@ void printWifiStatus() {
   Serial.print("IP Address: ");
   Serial.println(ip);
 
+}
+
+void motorForward(int speed){
+    digitalWrite(MOTOR_LEFT, HIGH);
+    digitalWrite(MOTOR_RIGHT, HIGH);
+}
+
+void motorStop(){
+  //
+    digitalWrite(MOTOR_LEFT, LOW);
+    digitalWrite(MOTOR_RIGHT, LOW); 
+}
+
+void motorLeft(int speed){
+    digitalWrite(MOTOR_LEFT, HIGH);
+    digitalWrite(MOTOR_RIGHT, LOW);
+}
+
+void motorRight(int speed){
+    digitalWrite(MOTOR_LEFT, LOW);
+    digitalWrite(MOTOR_RIGHT, HIGH);
 }
